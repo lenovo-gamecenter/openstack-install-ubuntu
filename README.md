@@ -23,14 +23,14 @@ character-set-server = utf8
 ```
 apt-get install rabbitmq-server
 ```
-## install glance
-###create database for keystone(mysql)
+## install keystone
+### create database for keystone(mysql)
 ```
 create database keystone;
 grant all privileges on keystone.* to keystone@'localhost' identified by 'openstack';
 grant all privileges on keystone.* to keystone@'%' identified by 'openstack';
 ```
-###install keystone
+### install keystone
 ```
 apt-get install keystone python-keystoneclient
 ```
@@ -307,14 +307,14 @@ apt-get install nova-compute python-novaclient
 ```
 vi /etc/nova/nova-compute.conf
 
-##install neutron
+## install neutron
 ### create database for neutron(mysql)
 ```
 create database neutron
 grant all privileges on neutron.* to neutron@'localhost' identified by 'openstack';
 grant all privileges on neutron.* to neutron@'%' identified by 'openstack';
 ```
-###create neutron user with keystone for neutron
+### create neutron user with keystone for neutron
 ```
 keystone user-create --name neutron --pass neutron --email feiy_2015@sina.com
 keystone user-role-add --user neutron --tenant service --role admin
@@ -486,8 +486,27 @@ su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf \
     --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade juno" neutron
 ```
 ###nova restart
+```
+service nova-api restart
+service nova-cert restart
+service nova-conductor restart
+service nova-consoleauth restart
+service nova-scheduler restart
+service nova-novncproxy restart
+service nova-compute restart
+```
 ###neutron restart
+```
+service neutron-server restart
+```
 ###neutron-agent restart
+```
+service openvswitch-switch restart
+service neutron-plugin-openvswitch-agent restart
+service neutron-dhcp-agent restart
+service neutron-l3-agent restart
+service neutron-metadata-agent restart
+```
 
 ## install horizon and remove ubuntu theme
 ```

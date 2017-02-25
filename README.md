@@ -334,7 +334,7 @@ apt-get install neutron-plugin-openvswitch-agent neutron-l3-agent neutron-dhcp-a
 ovs-vsctrl add-br br0
 ovs-vsctrl add-port br0 eth0
 ```
->update system variable
+update system variable
 ```
 vi /etc/sysctl.conf
 net.ipv4.conf.default.rp_filter = 0

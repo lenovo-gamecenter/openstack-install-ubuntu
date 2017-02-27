@@ -19,6 +19,9 @@ collation-server = utf8_general_ci
 init-connect = 'SET NAMES utf8'
 character-set-server = utf8
 ```
+```
+service mysql restart
+```
 ## install rabbitmq
 ```
 apt-get install rabbitmq-server
@@ -41,7 +44,7 @@ openssl rand -hex 10 >~/ADMIN_TOKEN
 ```
 vi /etc/keystone/keystone.conf
 [default]
-token=
+token=655e98d348e4a64ad7f0
 verbose=true
 [database]
 connection=mysql://keystone:openstack@openstack/keystone
@@ -59,7 +62,7 @@ service keystone restart
 ### set env for admin user to create user,tenant,role with keystone command
 ```
 export OS_SERVICE_ENDPOINT=http://openstack:35357/v2.0
-export OS_SERVICE_TOKEN=
+export OS_SERVICE_TOKEN=655e98d348e4a64ad7f0
 ```
 ```
 keystone tenant-create --name admin --description "Admin Tenant"
@@ -135,9 +138,10 @@ create database glance;
 grant all privileges on glance.* to glance@'localhost' identified by 'openstack';
 grant all privileges on glance.* to glance@'%' identified by 'openstack';
 ```
-
+```
 export OS_SERVICE_TOKEN=655e98d348e4a64ad7f0
 export OS_SERVICE_ENDPOINT=http://openstack:35357/v2.0
+```
 
 ### set env for admin
 ```
@@ -261,14 +265,13 @@ keystone user-role-add --user  nova --tenant service --role admin
 
 keystone service-create --name nova --type compute --description "Openstack Nova Compute"
 
-keystone endpoint-create --service-id=13223e8b93fc488e8d9bbc16b359ed70 --publicurl http://openstack:8774/v2/%\(tenant_id\)s --internalurl http://openstack:8774/v2/%\(tenant_id\)s --adminurl http://openstack:8774/v2/%\(tenant_id\)s --region regionOne
-
 keystone endpoint-create --service-id=15f88fd8b9b1439da7c8a4fb7649f422 \
 --publicurl http://openstack:8774/v2/%\(tenant_id\)s \
  --internalurl http://openstack:8774/v2/%\(tenant_id\)s \
  --adminurl http://openstack:8774/v2/%\(tenant_id\)s \
  --region regionOne
 ```
+### service-id=$(keystone service-list |awk '/ compute / {print $2}')
 ### install nova
 ```
 apt-get install nova-api nova-cert nova-conductor nova-consoleauth nova-scheduler nova-novncproxy python-novaclient

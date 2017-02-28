@@ -2,8 +2,8 @@
 ## Prepare for juno resource on ubuntu
 ```
 apt-get install python-software-properties -y
-add-apt-repository cloud-archive:juno -y
-apt-get update -y
+add-apt-repository cloud-archive:juno
+apt-get update
 apt-get dist-upgrade -y
 ```
 ## install mysql
